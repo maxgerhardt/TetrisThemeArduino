@@ -1,8 +1,12 @@
-Tetris Theme Arduino
-====================
+Tetris Theme Arduino with PlatformIO
+====================================
 
 Plays the Tetris theme song from a digital arduino pin. Just connect a piezo or
-speaker to **PIN 13** & **GND**.
+speaker to **PIN 12** & **GND**.
+
+You might also want to use one NPN transistor as an amplifier to get louder sound. See https://startingelectronics.org/beginners/circuits/arduino-buzzer/.
+
+This is a PlatformIO project and used for testing new debugging capabilities for the STM8 platform.
 
 
 License (MIT)
