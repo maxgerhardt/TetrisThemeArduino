@@ -1,8 +1,15 @@
-// By Luke Cyca
+// Oriignally By Luke Cyca
 // https://lukecyca.com
 // https://github.com/lukecyca/TetrisThemeArduino
+// Adapted for STM8 by Maximilian Gerhardt
+// https://github.com/maxgerhardt/TetrisThemeArduino
+#include <Arduino.h>
 
-#define PIEZO_PIN  (13)
+#define PIEZO_PIN  (12) 
+/* ^- for Generic STM8S103F3 breakout board (stm8sblue): pin PD3 */
+/* per https://github.com/tenbaht/sduino/blob/0ce7e4c381028f6472eb29e8459210cee90b937d/sduino/stm8/variants/standard/pins_arduino.h#L55 */
+/* and https://tenbaht.github.io/sduino/hardware/stm8blue/ */
+/* for other boards, pin location of D3 changes of course -- look into your variant definition */
 
 // A rest
 #define _R     (0)
@@ -121,7 +128,7 @@
 #define BPM   (120.0)
 
 
-float lead_notes[] = {
+static const float lead_notes[] = {
   // part 1
   _E5, _B4, _C5, _D5, _C5, _B4, _A4, _A4, _C5, _E5, _D5, _C5, _B4, _B4, _C5, _D5, _E5, _C5, _A4, _A4, _R,
   _D5, _F5, _A5, _G5, _F5, _E5, _C5, _E5, _D5, _C5, _B4, _B4, _C5, _D5, _E5, _C5, _A4, _A4, _R,
@@ -131,7 +138,7 @@ float lead_notes[] = {
   _E4, _C4, _D4, _B3, _C4, _E4, _A4, _A4, _GS4, _R
 
 };
-float lead_times[] = {
+static const float lead_times[] = {
   // part 1
   1.0, 0.5, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
   1.5, 0.5, 1.0, 0.5, 0.5, 1.5, 0.5, 1.0, 0.5, 0.5, 1.0, 0.5, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
@@ -142,7 +149,7 @@ float lead_times[] = {
 
 };
 
-float bass_notes[] = {
+static const float bass_notes[] = {
   // part 1
   _E2, _E3, _E2, _E3, _E2, _E3, _E2, _E3, _A1, _A2, _A1, _A2, _A1, _A2, _A1, _A2, _GS1, _GS2, _GS1, _GS2, _GS1, _GS2, _GS1, _GS2, _A1, _A2, _A1, _A2, _A1, _B2, _C3, _E3,
   _D2, _D3, _D2, _D3, _D2, _D3, _D2, _D3, _C2, _C3, _C2, _C3, _C2, _C3, _C2, _C3, _B1, _B2, _B1, _B2, _B1, _B2, _B1, _B2, _A1, _A2, _A1, _A2, _A1, _A2, _A1, _A2,
@@ -153,7 +160,7 @@ float bass_notes[] = {
 
 
 };
-float bass_times[] = {
+static const float bass_times[] = {
   // part 1
   0.5,  0.5,  0.5,  0.5,  0.5,  0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
   0.5,  0.5,  0.5,  0.5,  0.5,  0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
